@@ -6,6 +6,8 @@ import com.razgonyaev.rickandmortyapp.core.rx.di.RxApi
 import com.razgonyaev.rickandmortyapp.core.rx.di.RxFeatureHolder
 import com.razgonyaev.rickandmortyapp.di.FeatureHolder
 import com.razgonyaev.rickandmortyapp.di.FeatureHolderContainer
+import com.razgonyaev.rickandmortyapp.feature.character_list.di.CharacterListApi
+import com.razgonyaev.rickandmortyapp.feature.character_list.di.CharacterListFeatureHolder
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.ClassKey
@@ -29,5 +31,13 @@ object FeatureHolderModule {
     @ClassKey(RxApi::class)
     fun provideRxFeatureHolder(featureHolderContainer: FeatureHolderContainer): FeatureHolder<*> {
         return RxFeatureHolder(featureHolderContainer)
+    }
+
+    @Singleton
+    @Provides
+    @IntoMap
+    @ClassKey(CharacterListApi::class)
+    fun provideCharacterListFeatureHolder(featureHolderContainer: FeatureHolderContainer): FeatureHolder<*> {
+        return CharacterListFeatureHolder(featureHolderContainer)
     }
 }
