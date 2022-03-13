@@ -1,11 +1,11 @@
 package com.razgonyaev.rickandmortyapp.di.holder
 
+import com.razgonyaev.rickandmortyapp.core.network.di.NetworkApi
+import com.razgonyaev.rickandmortyapp.core.network.di.NetworkFeatureHolder
+import com.razgonyaev.rickandmortyapp.core.rx.di.RxApi
+import com.razgonyaev.rickandmortyapp.core.rx.di.RxFeatureHolder
 import com.razgonyaev.rickandmortyapp.di.FeatureHolder
 import com.razgonyaev.rickandmortyapp.di.FeatureHolderContainer
-import com.razgonyaev.rickandmortyapp.di.core.network.di.NetworkApi
-import com.razgonyaev.rickandmortyapp.di.core.network.di.NetworkFeatureHolder
-import com.razgonyaev.rickandmortyapp.di.core.rx.di.RxApi
-import com.razgonyaev.rickandmortyapp.di.core.rx.di.RxFeatureHolder
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.ClassKey

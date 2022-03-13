@@ -1,4 +1,4 @@
-package com.razgonyaev.rickandmortyapp.di.core.rx
+package com.razgonyaev.rickandmortyapp.core.rx
 
 import io.reactivex.Scheduler
 

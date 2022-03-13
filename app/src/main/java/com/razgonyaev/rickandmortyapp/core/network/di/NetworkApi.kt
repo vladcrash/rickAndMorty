@@ -1,4 +1,4 @@
-package com.razgonyaev.rickandmortyapp.di.core.network.di
+package com.razgonyaev.rickandmortyapp.core.network.di
 
 import retrofit2.Retrofit
 

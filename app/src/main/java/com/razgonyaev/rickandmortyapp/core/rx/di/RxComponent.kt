@@ -1,4 +1,4 @@
-package com.razgonyaev.rickandmortyapp.di.core.rx.di
+package com.razgonyaev.rickandmortyapp.core.rx.di
 
 import dagger.Component
 import javax.inject.Singleton

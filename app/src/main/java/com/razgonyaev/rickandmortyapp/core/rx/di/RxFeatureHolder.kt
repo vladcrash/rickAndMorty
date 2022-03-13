@@ -1,4 +1,4 @@
-package com.razgonyaev.rickandmortyapp.di.core.rx.di
+package com.razgonyaev.rickandmortyapp.core.rx.di
 
 import com.razgonyaev.rickandmortyapp.di.FeatureHolder
 import com.razgonyaev.rickandmortyapp.di.FeatureHolderContainer
