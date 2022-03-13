@@ -4,6 +4,8 @@ import com.razgonyaev.rickandmortyapp.di.FeatureHolder
 import com.razgonyaev.rickandmortyapp.di.FeatureHolderContainer
 import com.razgonyaev.rickandmortyapp.di.core.network.di.NetworkApi
 import com.razgonyaev.rickandmortyapp.di.core.network.di.NetworkFeatureHolder
+import com.razgonyaev.rickandmortyapp.di.core.rx.di.RxApi
+import com.razgonyaev.rickandmortyapp.di.core.rx.di.RxFeatureHolder
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.ClassKey
@@ -19,5 +21,13 @@ object FeatureHolderModule {
     @ClassKey(NetworkApi::class)
     fun provideNetworkApiFeatureHolder(featureHolderContainer: FeatureHolderContainer): FeatureHolder<*> {
         return NetworkFeatureHolder(featureHolderContainer)
+    }
+
+    @Singleton
+    @Provides
+    @IntoMap
+    @ClassKey(RxApi::class)
+    fun provideRxFeatureHolder(featureHolderContainer: FeatureHolderContainer): FeatureHolder<*> {
+        return RxFeatureHolder(featureHolderContainer)
     }
 }
