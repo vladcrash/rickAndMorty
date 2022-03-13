@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/character_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="3"
+        tools:listitem="@layout/character_list_item"
+        tools:visibility="visible" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/error_image"
+        android:layout_width="@dimen/illustration_size"
+        android:layout_height="@dimen/illustration_size"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ill_200_error_outline"
+        tools:src="@drawable/ill_200_error_outline"
+        tools:visibility="gone" />
+
+    <TextView
+        android:id="@+id/error_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/general_error_message"
+        android:textColor="@color/text_color_title"
+        android:textSize="@dimen/text_size_title"
+        tools:visibility="gone" />
+
+</LinearLayout>
+
