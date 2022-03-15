@@ -9,6 +9,6 @@ class CharacterLocationResponseMapper {
         CharacterLocation(
             id = response.id,
             name = response.name,
-            residents = response.residents,
+            residents = response.residents.size,
         )
 }

@@ -5,6 +5,6 @@ import com.razgonyaev.rickandmortyapp.feature.character_location.domain.model.Ch
 class CharacterLocationFactory {
 
     fun create(location: CharacterLocation): String {
-        return "There are ${location.residents.size} residents on ${location.name}"
+        return "There are ${location.residents} residents on ${location.name}"
     }
 }

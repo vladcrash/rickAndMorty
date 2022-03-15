@@ -5,6 +5,7 @@ import com.razgonyaev.rickandmortyapp.db.app_db.RickAndMortyDatabase
 import com.razgonyaev.rickandmortyapp.db.app_db.RickAndMortyDatabaseFactory
 import com.razgonyaev.rickandmortyapp.db.character_db.CharacterDao
 import com.razgonyaev.rickandmortyapp.db.character_db.CharacterDatabase
+import com.razgonyaev.rickandmortyapp.db.character_db.location.CharacterLocationDao
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -23,6 +24,12 @@ abstract class DatabaseModule {
         @Provides
         fun provideCharacterDao(characterDatabase: CharacterDatabase): CharacterDao {
             return characterDatabase.getCharacterDao()
+        }
+
+        @Singleton
+        @Provides
+        fun provideCharacterLocationDao(characterDatabase: CharacterDatabase): CharacterLocationDao {
+            return characterDatabase.getCharacterLocationDao()
         }
 
         @Singleton

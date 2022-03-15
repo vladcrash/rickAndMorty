@@ -3,7 +3,9 @@ package com.razgonyaev.rickandmortyapp.feature.character_location.di
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.razgonyaev.rickandmortyapp.core.rx.RxSchedulers
+import com.razgonyaev.rickandmortyapp.db.di.DatabaseApi
 import com.razgonyaev.rickandmortyapp.feature.character_location.data.api.CharacterLocationApi
+import com.razgonyaev.rickandmortyapp.feature.character_location.data.mapper.CharacterLocationDataMapper
 import com.razgonyaev.rickandmortyapp.feature.character_location.data.mapper.CharacterLocationResponseMapper
 import com.razgonyaev.rickandmortyapp.feature.character_location.data.repository.CharacterLocationRepositoryImpl
 import com.razgonyaev.rickandmortyapp.feature.character_location.domain.interactor.CharacterLocationInteractor
@@ -43,11 +45,18 @@ object CharacterLocationModule {
     @Provides
     fun provideCharacterLocationInteractor(
         retrofit: Retrofit,
+        databaseApi: DatabaseApi,
     ): CharacterLocationInteractor {
         val apiMapper = CharacterLocationResponseMapper()
         val api = retrofit.create(CharacterLocationApi::class.java)
+        val dataMapper = CharacterLocationDataMapper()
         val repository =
-            CharacterLocationRepositoryImpl(api, apiMapper)
+            CharacterLocationRepositoryImpl(
+                api,
+                apiMapper,
+                databaseApi.getCharacterLocationDao(),
+                dataMapper
+            )
         return CharacterLocationInteractor(
             repository
         )
