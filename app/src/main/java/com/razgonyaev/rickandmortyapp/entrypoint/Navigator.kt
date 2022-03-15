@@ -3,8 +3,9 @@ package com.razgonyaev.rickandmortyapp.entrypoint
 import androidx.fragment.app.FragmentManager
 import com.razgonyaev.rickandmortyapp.R
 import com.razgonyaev.rickandmortyapp.feature.character_list.presentation.CharacterListFragment
+import com.razgonyaev.rickandmortyapp.feature.character_location.presentation.CharacterLocationFragment
 
-class Navigator {
+object Navigator {
 
     fun navigateToCharacterList(fragmentManager: FragmentManager) {
         fragmentManager
@@ -13,7 +14,13 @@ class Navigator {
             .commit()
     }
 
-    private companion object {
-        val CONTAINER_ID_BODY = R.id.fragment_container
+    fun navigateToCharacterLocation(fragmentManager: FragmentManager, characterId: Int) {
+        fragmentManager
+            .beginTransaction()
+            .replace(CONTAINER_ID_BODY, CharacterLocationFragment.newInstance(characterId))
+            .addToBackStack(null)
+            .commit()
     }
+
+    private const val CONTAINER_ID_BODY = R.id.fragment_container
 }

@@ -12,6 +12,7 @@ import com.xwray.groupie.viewbinding.BindableItem
 class CharacterItem(
     private val character: Character,
     private val isDividerVisible: Boolean,
+    private val clickListener: (id: Int) -> Unit
 ) : BindableItem<CharacterListItemBinding>() {
 
     override fun bind(binding: CharacterListItemBinding, position: Int) {
@@ -26,6 +27,7 @@ class CharacterItem(
                 .resizeDimen(R.dimen.icon_size, R.dimen.icon_size)
                 .centerCrop()
                 .into(icon)
+            root.setOnClickListener { clickListener.invoke(character.id) }
         }
     }
 

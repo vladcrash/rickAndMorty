@@ -9,9 +9,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val navigator = Navigator()
         if (savedInstanceState == null) {
-            navigator.navigateToCharacterList(supportFragmentManager)
+            Navigator.navigateToCharacterList(supportFragmentManager)
+        }
+    }
+
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            supportFragmentManager.popBackStack()
+        } else {
+            super.onBackPressed()
         }
     }
 }

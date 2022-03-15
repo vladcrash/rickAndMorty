@@ -1,4 +1,4 @@
-package com.razgonyaev.rickandmortyapp.feature.character_list.presentation
+package com.razgonyaev.rickandmortyapp.feature.character_location.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,31 +8,36 @@ import androidx.lifecycle.ViewModelProvider
 import com.razgonyaev.rickandmortyapp.core.base.BaseFragment
 import com.razgonyaev.rickandmortyapp.core.view.gone
 import com.razgonyaev.rickandmortyapp.core.view.visible
-import com.razgonyaev.rickandmortyapp.databinding.FragmentCharacterListBinding
+import com.razgonyaev.rickandmortyapp.databinding.FragmentCharacterLocationBinding
 import com.razgonyaev.rickandmortyapp.di.DI
-import com.razgonyaev.rickandmortyapp.entrypoint.Navigator
 import com.razgonyaev.rickandmortyapp.feature.character_list.di.CharacterListApi
 
-class CharacterListFragment : BaseFragment() {
+class CharacterLocationFragment : BaseFragment() {
 
-    private var _binding: FragmentCharacterListBinding? = null
+    private var _binding: FragmentCharacterLocationBinding? = null
     private val binding
         get() = _binding!!
 
-    private lateinit var viewModel: CharacterListViewModel
+    private lateinit var viewModel: CharacterLocationViewModel
+    private var characterId: Int = 0
 
     override fun resolveDependencies() {
         viewModel = ViewModelProvider(
             this,
-            DI.getFeature(CharacterListApi::class.java).getCharacterListViewModelFactory()
-        )[CharacterListViewModel::class.java]
+            DI.getFeature(CharacterListApi::class.java).getCharacterLocationViewModelFactory()
+        )[CharacterLocationViewModel::class.java]
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        characterId = arguments?.getInt(CHARACTER_ID_PARAM) ?: error("no characterId is provided")
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = FragmentCharacterListBinding
+    ): View = FragmentCharacterLocationBinding
         .inflate(layoutInflater, container, false)
         .also {
             _binding = it
@@ -40,64 +45,53 @@ class CharacterListFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.adapterLiveData.observe(viewLifecycleOwner) { adapter ->
-            binding.characterList.adapter = adapter
-        }
-        viewModel.characterListState.observe(viewLifecycleOwner, ::render)
-        viewModel.characterClickedId.observe(viewLifecycleOwner) { id ->
-            Navigator.navigateToCharacterLocation(
-                requireActivity().supportFragmentManager,
-                characterId = id
-            )
-        }
+        viewModel.characterLocationState.observe(viewLifecycleOwner, ::render)
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.onScreenVisible()
+        viewModel.onScreenVisible(characterId)
     }
 
-    private fun render(state: CharacterListState) {
+    private fun render(state: CharacterLocationState) {
         when (state) {
             Uninitialized -> toInitialState()
             Loading -> toLoadingState()
-            Success -> toSuccessState()
+            is Success -> toSuccessState(state)
             Error -> toErrorState()
         }
     }
 
     private fun toInitialState() {
         with(binding) {
-            characterList.gone()
+            locationTextInfo.gone()
             progressBar.gone()
-            errorImage.gone()
             errorText.gone()
         }
     }
 
     private fun toLoadingState() {
         with(binding) {
-            characterList.gone()
+            locationTextInfo.gone()
             progressBar.visible()
-            errorImage.gone()
             errorText.gone()
         }
     }
 
-    private fun toSuccessState() {
+    private fun toSuccessState(successState: Success) {
         with(binding) {
-            characterList.visible()
+            locationTextInfo.visible()
             progressBar.gone()
-            errorImage.gone()
             errorText.gone()
+
+            locationTextInfo.text = successState.locationInfo
         }
     }
 
     private fun toErrorState() {
         with(binding) {
-            characterList.gone()
+            locationTextInfo.gone()
             progressBar.gone()
-            errorImage.visible()
             errorText.visible()
         }
     }
@@ -112,6 +106,13 @@ class CharacterListFragment : BaseFragment() {
     }
 
     companion object {
-        fun newInstance(): CharacterListFragment = CharacterListFragment()
+        private const val CHARACTER_ID_PARAM = "character_id_param"
+
+        fun newInstance(characterId: Int): CharacterLocationFragment =
+            CharacterLocationFragment().apply {
+                arguments = Bundle().apply {
+                    putInt(CHARACTER_ID_PARAM, characterId)
+                }
+            }
     }
 }

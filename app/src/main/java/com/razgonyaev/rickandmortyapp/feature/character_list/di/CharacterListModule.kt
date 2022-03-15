@@ -15,11 +15,13 @@ import com.xwray.groupie.GroupieAdapter
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
 @Module
 object CharacterListModule {
 
+    @CharacterListViewModelQualifier
     @Singleton
     @Provides
     fun provideCharacterListViewModelFactory(
@@ -56,3 +58,6 @@ object CharacterListModule {
         )
     }
 }
+
+@Qualifier
+annotation class CharacterListViewModelQualifier
