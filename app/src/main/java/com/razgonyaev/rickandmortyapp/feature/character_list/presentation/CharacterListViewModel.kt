@@ -7,23 +7,17 @@ import com.razgonyaev.rickandmortyapp.core.base.BaseViewModel
 import com.razgonyaev.rickandmortyapp.core.rx.RxSchedulers
 import com.razgonyaev.rickandmortyapp.core.rx.addTo
 import com.razgonyaev.rickandmortyapp.feature.character_list.domain.interactor.CharacterListInteractor
-import com.xwray.groupie.GroupieAdapter
 import com.xwray.groupie.Section
 
 class CharacterListViewModel(
     private val interactor: CharacterListInteractor,
     private val rxSchedulers: RxSchedulers,
     private val characterListFactory: CharacterListFactory,
-    private val adapter: GroupieAdapter,
 ) : BaseViewModel() {
 
     val characterListState: LiveData<CharacterListState>
         get() = _characterListState
     private val _characterListState = MutableLiveData<CharacterListState>(Uninitialized)
-
-    val adapterLiveData: LiveData<GroupieAdapter>
-        get() = _adapterLiveData
-    private val _adapterLiveData = MutableLiveData<GroupieAdapter>()
 
     val characterClickedId: LiveData<Int>
         get() = _characterClickedId
@@ -31,7 +25,6 @@ class CharacterListViewModel(
 
     fun onScreenVisible() {
         if (_characterListState.value == Uninitialized) {
-            _adapterLiveData.value = adapter
             loadCharacterList()
         }
     }
@@ -47,8 +40,7 @@ class CharacterListViewModel(
     }
 
     private fun onSuccess(characterList: List<Section>) {
-        adapter.addAll(characterList)
-        _characterListState.value = Success
+        _characterListState.value = Success(characterList)
     }
 
     private fun onError() {

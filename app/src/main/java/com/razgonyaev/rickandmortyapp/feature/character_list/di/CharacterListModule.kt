@@ -11,7 +11,6 @@ import com.razgonyaev.rickandmortyapp.feature.character_list.data.repository.Cha
 import com.razgonyaev.rickandmortyapp.feature.character_list.domain.interactor.CharacterListInteractor
 import com.razgonyaev.rickandmortyapp.feature.character_list.presentation.CharacterListFactory
 import com.razgonyaev.rickandmortyapp.feature.character_list.presentation.CharacterListViewModel
-import com.xwray.groupie.GroupieAdapter
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -33,7 +32,7 @@ object CharacterListModule {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return if (modelClass == CharacterListViewModel::class.java) {
                     CharacterListViewModel(
-                        interactor, rxSchedulers, CharacterListFactory(), GroupieAdapter()
+                        interactor, rxSchedulers, CharacterListFactory()
                     ) as T
                 } else {
                     throw IllegalArgumentException("viewModel $modelClass is not found")

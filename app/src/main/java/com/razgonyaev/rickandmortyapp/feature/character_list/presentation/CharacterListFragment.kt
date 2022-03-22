@@ -12,6 +12,7 @@ import com.razgonyaev.rickandmortyapp.databinding.FragmentCharacterListBinding
 import com.razgonyaev.rickandmortyapp.di.DI
 import com.razgonyaev.rickandmortyapp.entrypoint.Navigator
 import com.razgonyaev.rickandmortyapp.feature.character_list.di.CharacterListApi
+import com.xwray.groupie.GroupieAdapter
 
 class CharacterListFragment : BaseFragment() {
 
@@ -20,6 +21,9 @@ class CharacterListFragment : BaseFragment() {
         get() = _binding!!
 
     private lateinit var viewModel: CharacterListViewModel
+    private var _adapter: GroupieAdapter? = null
+    private val adapter
+        get() = _adapter!!
 
     override fun resolveDependencies() {
         viewModel = ViewModelProvider(
@@ -40,9 +44,9 @@ class CharacterListFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.adapterLiveData.observe(viewLifecycleOwner) { adapter ->
-            binding.characterList.adapter = adapter
-        }
+        _adapter = GroupieAdapter()
+        binding.characterList.adapter = adapter
+
         viewModel.characterListState.observe(viewLifecycleOwner, ::render)
         viewModel.characterClickedId.observe(viewLifecycleOwner) { id ->
             Navigator.navigateToCharacterLocation(
@@ -61,7 +65,7 @@ class CharacterListFragment : BaseFragment() {
         when (state) {
             Uninitialized -> toInitialState()
             Loading -> toLoadingState()
-            Success -> toSuccessState()
+            is Success -> toSuccessState(state)
             Error -> toErrorState()
         }
     }
@@ -84,12 +88,14 @@ class CharacterListFragment : BaseFragment() {
         }
     }
 
-    private fun toSuccessState() {
+    private fun toSuccessState(state: Success) {
         with(binding) {
             characterList.visible()
             progressBar.gone()
             errorImage.gone()
             errorText.gone()
+
+            adapter.addAll(state.list)
         }
     }
 
@@ -105,6 +111,7 @@ class CharacterListFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        _adapter = null
     }
 
     override fun releaseDependencies() {
